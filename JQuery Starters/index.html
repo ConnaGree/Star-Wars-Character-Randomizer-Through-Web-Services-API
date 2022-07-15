@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Star Wars Character Generator</title>
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="favicon/fav.jpg" type="image/jpg" />
+
+    <!-- STYLESHEET -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="character__card">
+      <div class="img__container"></div>
+      <h2 class="character__name"></h2>
+      <span>HomeWorld</span>
+      <p class="home"></p>
+      <span>Species</span>
+      <p class="specie"></p>
+    </div>
+
+    <button class="randomize__btn">Randomize</button>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        const randomGenerator = () => {
+          const randomNumber = Math.ceil(Math.random() * 88);
+          fetch(
+            `https://akabab.github.io/starwars-api/api/id/${randomNumber}.json`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              const name = data.name;
+              const img = data.image;
+              const home = data.homeworld;
+              const species = data.species;
+
+              const $randomizeBtn = $(".randomize__btn");
+              const $imageContainer = $(".img__container");
+              const $nameContainer = $(".character__name");
+              const $homeWorld = $(".home");
+              const $specie = $(".specie");
+
+              $imageContainer.html(`<img src=${img}>`);
+              $nameContainer.text(`${name}`);
+              $homeWorld.text(`${home}`);
+              $specie.text(`${species}`);
+            });
+        };
+
+        randomGenerator(); //Populate the page initially
+
+        $(".randomize__btn").on("click", () => {
+          randomGenerator();
+        });
+      });
+    </script>
+  </body>
+</html>
